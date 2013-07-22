@@ -43,6 +43,16 @@
     return [[[TiBlob alloc] initWithImage:img] autorelease];
 }
 
+-(TiBlob*)videocontent
+{
+	long size = [assetRepresentation size];
+    Byte *buffer = (Byte*)malloc(size);
+    
+	NSUInteger buffered = [assetRepresentation getBytes:buffer fromOffset:0.0 length:size error:nil];
+	NSData *data = [NSData dataWithBytesNoCopy:buffer length:buffered freeWhenDone:YES];
+            
+    return [[[TiBlob alloc] initWithData:data mimetype:nil] autorelease];
+}
 
 -(NSDictionary*)metadata
 {
