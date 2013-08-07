@@ -280,5 +280,54 @@ MAKE_SYSTEM_STR(AssetsUpdateDeletedAssetGroups, ALAssetLibraryDeletedAssetGroups
 }
 
 
+-(void)compressAsset:(id)args
+{
+    ENSURE_ARG_COUNT(args, 4);
+    
+    id url = [args objectAtIndex:0];
+    ENSURE_TYPE(url, NSString);
+    
+    id tmpurl = [args objectAtIndex:1];
+    ENSURE_TYPE(tmpurl, NSString);
+    
+    id successCb = [args objectAtIndex:2];
+    ENSURE_TYPE(successCb, KrollCallback);
+    
+    id errorCb = [args objectAtIndex:3];
+    ENSURE_TYPE(errorCb, KrollCallback);
+    
+    NSURL *assetUrl = [NSURL URLWithString:url];
+    NSURL *outputURL = [NSURL URLWithString:tmpurl];
+    
+    [self convertVideoToLowQuailtyWithInputURL:assetUrl outputURL:outputURL handler:^(AVAssetExportSession *exportSession)
+     {
+         if (exportSession.status == AVAssetExportSessionStatusCompleted)
+         {
+            NSDictionary *obj = [NSDictionary dictionaryWithObject:@"Exported Video" forKey:@"sucess"];
+        	[self _fireEventToListener:@"gotAsset" withObject:obj listener:successCb thisObject:nil];
+         }
+         else
+         {
+            NSDictionary *obj = [NSDictionary dictionaryWithObject:@"Error" forKey:@"error"];
+        	[self _fireEventToListener:@"error" withObject:obj listener:errorCb thisObject:nil];
+         }
+     }];
+ 
+}
+- (void)convertVideoToLowQuailtyWithInputURL:(NSURL*)inputURL 
+                                   outputURL:(NSURL*)outputURL 
+                                     handler:(void (^)(AVAssetExportSession*))handler
+{
+    [[NSFileManager defaultManager] removeItemAtURL:outputURL error:nil];
+    AVURLAsset *asset = [AVURLAsset URLAssetWithURL:inputURL options:nil];
+    AVAssetExportSession *exportSession = [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPresetMediumQuality];
+    exportSession.outputURL = outputURL;
+    exportSession.outputFileType = AVFileTypeQuickTimeMovie;
+    [exportSession exportAsynchronouslyWithCompletionHandler:^(void) 
+    {
+        handler(exportSession);
+        [exportSession release];
+    }];
+}
 
 @end

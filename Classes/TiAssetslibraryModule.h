@@ -6,7 +6,7 @@
  */
 #import "TiModule.h"
 #import "AssetsLibrary/AssetsLibrary.h"
-
+#import "AVFoundation/AVFoundation.h"
 
 @interface TiAssetslibraryModule : TiModule 
 {
