@@ -37,6 +37,7 @@
 		24DD6CFA1134B3F500162E58 /* TiAssetslibraryModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DD6CF81134B3F500162E58 /* TiAssetslibraryModule.m */; };
 		24DE9E1111C5FE74003F90F6 /* TiAssetslibraryModuleAssets.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DE9E0F11C5FE74003F90F6 /* TiAssetslibraryModuleAssets.h */; };
 		24DE9E1211C5FE74003F90F6 /* TiAssetslibraryModuleAssets.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24DE9E1011C5FE74003F90F6 /* TiAssetslibraryModuleAssets.mm */; };
+		49EFB7A717B279320025DFB2 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49EFB7A617B279320025DFB2 /* AVFoundation.framework */; };
 		AA747D9F0F9514B9006C5449 /* TiAssetslibrary_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* TiAssetslibrary_Prefix.pch */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 /* End PBXBuildFile section */
@@ -68,6 +69,7 @@
 		24DD6D1B1134B66800162E58 /* titanium.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = titanium.xcconfig; sourceTree = "<group>"; };
 		24DE9E0F11C5FE74003F90F6 /* TiAssetslibraryModuleAssets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TiAssetslibraryModuleAssets.h; path = Classes/TiAssetslibraryModuleAssets.h; sourceTree = "<group>"; };
 		24DE9E1011C5FE74003F90F6 /* TiAssetslibraryModuleAssets.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TiAssetslibraryModuleAssets.mm; path = Classes/TiAssetslibraryModuleAssets.mm; sourceTree = "<group>"; };
+		49EFB7A617B279320025DFB2 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AA747D9E0F9514B9006C5449 /* TiAssetslibrary_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TiAssetslibrary_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2AAC07E0554694100DB518D /* libTiAssetslibrary.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTiAssetslibrary.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -78,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49EFB7A717B279320025DFB2 /* AVFoundation.framework in Frameworks */,
 				09A74E32158CC5AE000664F8 /* CoreLocation.framework in Frameworks */,
 				099993AE1587E498006D626C /* AssetsLibrary.framework in Frameworks */,
 				AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */,
@@ -99,6 +102,7 @@
 		0867D691FE84028FC02AAC07 /* assetslibrary */ = {
 			isa = PBXGroup;
 			children = (
+				49EFB7A617B279320025DFB2 /* AVFoundation.framework */,
 				09A74E31158CC5AE000664F8 /* CoreLocation.framework */,
 				08FB77AEFE84172EC02AAC07 /* Classes */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
