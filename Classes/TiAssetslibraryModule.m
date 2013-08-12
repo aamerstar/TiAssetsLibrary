@@ -308,7 +308,8 @@ MAKE_SYSTEM_STR(AssetsUpdateDeletedAssetGroups, ALAssetLibraryDeletedAssetGroups
          }
          else
          {
-            NSDictionary *obj = [NSDictionary dictionaryWithObject:@"Error" forKey:@"error"];
+         	NSString* withPrefix = [NSString stringWithFormat:@"%@",  [[exportSession error] localizedDescription]];
+            NSDictionary *obj = [NSDictionary dictionaryWithObject:withPrefix forKey:@"error"];
         	[self _fireEventToListener:@"error" withObject:obj listener:errorCb thisObject:nil];
          }
      }];
