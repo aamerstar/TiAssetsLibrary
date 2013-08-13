@@ -331,4 +331,48 @@ MAKE_SYSTEM_STR(AssetsUpdateDeletedAssetGroups, ALAssetLibraryDeletedAssetGroups
     }];
 }
 
+-(void)compressAssetSync:(id)args
+{
+    ENSURE_ARG_COUNT(args, 4);
+    
+    id url = [args objectAtIndex:0];
+    ENSURE_TYPE(url, NSString);
+    
+    id tmpurl = [args objectAtIndex:1];
+    ENSURE_TYPE(tmpurl, NSString);
+    
+    id successCb = [args objectAtIndex:2];
+    ENSURE_TYPE(successCb, KrollCallback);
+    
+    id errorCb = [args objectAtIndex:3];
+    ENSURE_TYPE(errorCb, KrollCallback);
+    
+    NSURL *assetUrl = [NSURL URLWithString:url];
+    NSURL *outputURL = [NSURL URLWithString:tmpurl];
+    
+     [[NSFileManager defaultManager] removeItemAtURL:outputURL error:nil];
+    AVURLAsset *asset = [AVURLAsset URLAssetWithURL:assetUrl options:nil];
+    AVAssetExportSession *exportSession = [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPresetMediumQuality];
+    exportSession.outputURL = outputURL;
+    exportSession.outputFileType = AVFileTypeQuickTimeMovie;
+    
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+	[exportSession exportAsynchronouslyWithCompletionHandler:^{
+	    dispatch_semaphore_signal(semaphore);
+	}];
+	dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+	dispatch_release(semaphore);
+         if (exportSession.status == AVAssetExportSessionStatusCompleted)
+         {
+            NSDictionary *obj = [NSDictionary dictionaryWithObject:@"Exported Video" forKey:@"sucess"];
+        	[self _fireEventToListener:@"gotAsset" withObject:obj listener:successCb thisObject:nil];
+         }
+         else
+         {
+         	NSString* withPrefix = [NSString stringWithFormat:@"%@",  [[exportSession error] localizedDescription]];
+            NSDictionary *obj = [NSDictionary dictionaryWithObject:withPrefix forKey:@"error"];
+        	[self _fireEventToListener:@"error" withObject:obj listener:errorCb thisObject:nil];
+         }
+}
+
 @end
