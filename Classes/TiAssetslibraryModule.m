@@ -375,4 +375,43 @@ MAKE_SYSTEM_STR(AssetsUpdateDeletedAssetGroups, ALAssetLibraryDeletedAssetGroups
          }
 }
 
+-(void)getThumbnail:(id)args
+{
+    ENSURE_ARG_COUNT(args, 2);
+    
+    id str = [args objectAtIndex:0];
+    ENSURE_TYPE(str, NSString);
+    
+    id number = [args objectAtIndex:1];
+    ENSURE_TYPE(number, NSNumber);
+    
+    Float64 time = [TiUtils floatValue:number];
+    
+    NSURL *url = [[NSURL alloc] initWithString:str];
+    AVURLAsset *asset=[[AVURLAsset alloc] initWithURL:url options:nil];
+    AVAssetImageGenerator *generator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+    generator.appliesPreferredTrackTransform=TRUE;
+    [asset release];
+    CMTime thumbTime = CMTimeMakeWithSeconds(time,30);
+    
+    AVAssetImageGeneratorCompletionHandler handler = ^(CMTime requestedTime, CGImageRef im, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error){
+        NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+        if (result != AVAssetImageGeneratorSucceeded) {
+            NSLog(@"couldn't generate thumbnail, error:%@", error);
+            [dict setObject:error forKey:@"error"];
+        }else{
+            UIImage *thumbImg=[[UIImage imageWithCGImage:im] retain];
+            TiBlob *blob = [[[TiBlob alloc] initWithImage:thumbImg] autorelease];
+            [dict setObject:blob forKey:@"image"];
+        }
+        [self fireEvent:@"thumbnailReceived" withObject:dict];
+        [generator release];
+    };
+    
+    CGSize maxSize = CGSizeMake(320, 480);
+    generator.maximumSize = maxSize;
+    [generator generateCGImagesAsynchronouslyForTimes:[NSArray arrayWithObject:[NSValue valueWithCMTime:thumbTime]] completionHandler:handler];
+
+}
+
 @end
